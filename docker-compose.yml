@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  konta-api:
+    build: .
+    container_name: konta-api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - konta-db
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@konta-db:5432/konta
+    networks:
+      - konta-net
+
+  konta-db:
+    image: postgres:16
+    container_name: konta-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: konta
+    volumes:
+      - konta-db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - konta-net
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: konta-pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - konta-db
+    networks:
+      - konta-net
+
+volumes:
+  konta-db-data:
+
+networks:
+  konta-net:
+    external: true
