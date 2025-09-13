@@ -4,6 +4,7 @@ import tseslint from "typescript-eslint";
 import { defineConfig } from "eslint/config";
 import eslintConfigPrettier from "eslint-config-prettier";
 
+// agrega rules para typescript @typescript-eslint/no-unused-vars
 export default defineConfig(
   [
     {
@@ -13,6 +14,22 @@ export default defineConfig(
       languageOptions: { globals: globals.browser },
     },
     tseslint.configs.recommended,
+    {
+      rules: {
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          {
+            "args": "all",
+            "argsIgnorePattern": "^_",
+            "caughtErrors": "all",
+            "caughtErrorsIgnorePattern": "^_",
+            "destructuredArrayIgnorePattern": "^_",
+            "varsIgnorePattern": "^_",
+            "ignoreRestSiblings": true
+          }
+        ],
+      },
+    },
   ],
   eslintConfigPrettier,
 );
