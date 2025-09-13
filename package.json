@@ -5,11 +5,16 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "prisma generate && nodemon src/index.js",
-    "start": "prisma generate && node src/index.js",
+    "dev": "prisma generate && tsx watch src/index.ts",
+    "start": "prisma generate && tsx src/index.ts",
+    "build": "tsc",
+    "start:prod": "node dist/index.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write src"
   },
   "keywords": [],
   "author": "",
@@ -24,7 +29,21 @@
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
+    "@eslint/js": "^9.35.0",
+    "@types/bcrypt": "^6.0.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.3.3",
+    "eslint": "^9.35.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^16.4.0",
+    "jiti": "^2.5.1",
     "nodemon": "^3.1.10",
-    "prisma": "^6.15.0"
+    "prettier": "3.6.2",
+    "prisma": "^6.15.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.43.0"
   }
 }
