@@ -12,9 +12,12 @@ services:
       DATABASE_URL: postgres://postgres:postgres@konta-db:5432/konta
     networks:
       - konta-net
+    volumes:
+      - .:/app
+      - /app/node_modules
 
   konta-db:
-    image: postgres:16
+    image: postgres:17
     container_name: konta-db
     restart: always
     environment:
