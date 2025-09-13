@@ -1,0 +1,27 @@
+### Registro de usuario
+POST http://localhost:3000/register
+Content-Type: application/json
+
+{
+  "email": "prueba@example.com",
+  "password": "123456"
+}
+
+###
+
+### Login y guardar token
+# @name loginRequest
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "email": "prueba@example.com",
+  "password": "123456"
+}
+
+###
+
+### Ejemplo ruta protegida
+@token = {{loginRequest.response.body.token}}
+GET http://localhost:3000/profile
+Authorization: Bearer {{token}}
