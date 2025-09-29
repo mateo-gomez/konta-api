@@ -5,6 +5,7 @@ import { authMiddleware } from "./middlewares/authMiddleware.js"; // con .js cua
 import authRoutes from "./routes/auth.routes.js";
 import accountRoutes from "./routes/account.routes.js";
 import transactionRoutes from "./routes/transaction.routes.js";
+import categoryRoutes from "./routes/category.routes.js";
 
 dotenv.config();
 const prisma = new PrismaClient();
@@ -26,5 +27,6 @@ app.get("/profile", authMiddleware, async (req, res) => {
 
 app.use('/accounts', authMiddleware, accountRoutes);
 app.use('/transactions', authMiddleware, transactionRoutes);
+app.use('/categories', authMiddleware, categoryRoutes);
 
 app.listen(3000, () => console.log("Server running on port 3000"));

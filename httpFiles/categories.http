@@ -1,0 +1,41 @@
+### 1️⃣ LOGIN (para obtener el token)
+# @name loginRequest
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "prueba@example.com",
+  "password": "123456"
+}
+
+###
+@token = {{loginRequest.response.body.token}}
+@categoryId = cmg5c2tku0001qnizf6ws3u4s
+
+### Crear categoría
+POST http://localhost:3000/categories
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Salario",
+  "type": "INCOME",
+  "color": "#4caf50"
+}
+
+### Listar categorías
+GET http://localhost:3000/categories
+Authorization: Bearer {{token}}
+
+### Actualizar categoría
+PUT http://localhost:3000/categories/{{categoryId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Salario mensual"
+}
+
+### Eliminar categoría
+DELETE http://localhost:3000/categories/{{categoryId}}
+Authorization: Bearer {{token}}
