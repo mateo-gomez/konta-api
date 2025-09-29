@@ -1,0 +1,42 @@
+# @name loginRequest
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "prueba@example.com",
+  "password": "123456"
+}
+
+###
+@token = {{loginRequest.response.body.token}}
+
+### Obtener cuentas
+GET http://localhost:3000/accounts
+Authorization: Bearer {{token}}
+
+### Crear cuenta
+POST http://localhost:3000/accounts
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Cuenta de ahorros de prueba",
+  "balance": 5000
+}
+
+###
+@accountId = cmg5b95wo0001qn2n8n3vfan8
+
+### Actualizar cuenta
+PUT http://localhost:3000/accounts/{{accountId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Cuenta modificada",
+  "balance": 6000
+}
+
+### Eliminar cuenta
+DELETE http://localhost:3000/accounts/{{accountId}}
+Authorization: Bearer {{token}}

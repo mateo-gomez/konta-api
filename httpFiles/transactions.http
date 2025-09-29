@@ -1,0 +1,59 @@
+### 1️⃣ LOGIN (para obtener el token)
+# @name loginRequest
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "prueba@example.com",
+  "password": "123456"
+}
+
+###
+@token = {{loginRequest.response.body.token}}
+@accountId = cmfiwew820001qk5sktgs8tkt
+
+
+
+### 2️⃣ CREAR UNA TRANSACCIÓN
+
+###
+POST http://localhost:3000/transactions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "type": "INCOME",
+  "amount": 1500.75,
+  "description": "Pago freelance",
+  "accountId": "{{accountId}}",
+  "date": "2025-08-30T10:00:00.000Z"
+}
+
+### 3️⃣ LISTAR TODAS LAS TRANSACCIONES DEL USUARIO
+GET http://localhost:3000/transactions
+Authorization: Bearer {{token}}
+
+### 4️⃣ ACTUALIZAR UNA TRANSACCIÓN
+@transactionId = cmfiz9dvo0001qnr907fbfn6k
+
+###
+PUT http://localhost:3000/transactions/{{transactionId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "amount": 2000,
+  "description": "Pago freelance ajustado",
+  "date": "2025-08-31T10:00:00.000Z"
+}
+
+### 5️⃣ PROBAR VALIDACIÓN (ejemplo de error)
+POST http://localhost:3000/transactions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "type": "INGRESO",
+  "amount": -100,
+  "accountId": "xxxx"
+}
