@@ -26,7 +26,8 @@ Content-Type: application/json
   "amount": 1500.75,
   "description": "Pago freelance",
   "accountId": "{{accountId}}",
-  "date": "2025-08-30T10:00:00.000Z"
+  "date": "2025-08-30T10:00:00.000Z",
+  "categoryId": "cmg5c2tku0001qnizf6ws3u4s"
 }
 
 ### 3️⃣ LISTAR TODAS LAS TRANSACCIONES DEL USUARIO
@@ -57,3 +58,10 @@ Content-Type: application/json
   "amount": -100,
   "accountId": "xxxx"
 }
+
+### 6️⃣ OBTENER UNA TRANSACCIÓN
+@transactionId = cmg5cpnxb0001qnpxh8it6abg
+
+###
+GET http://localhost:3000/transactions/{{transactionId}}
+Authorization: Bearer {{token}}

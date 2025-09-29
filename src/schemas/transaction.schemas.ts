@@ -7,6 +7,7 @@ export const createTransactionSchema = z.object({
     description: z.string().optional(),
     accountId: z.string().cuid('ID de cuenta inválido'),
     date: z.iso.datetime().optional(),
+    categoryId: z.string().cuid('ID de categoría inválido').optional(),
   }),
 });
 
@@ -19,5 +20,12 @@ export const updateTransactionSchema = z.object({
     amount: z.number().positive().optional(),
     description: z.string().optional(),
     date: z.iso.datetime().optional(),
+    categoryId: z.string().cuid('ID de categoría inválido').optional(),
+  }),
+});
+
+export const getTransactionSchema = z.object({
+  params: z.object({
+    id: z.string().cuid('ID de transacción inválido'),
   }),
 });

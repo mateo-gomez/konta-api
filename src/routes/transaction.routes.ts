@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import { validate } from '../middlewares/validate.middleware';
 import {
   createTransactionSchema,
+  getTransactionSchema,
   updateTransactionSchema,
 } from '../schemas/transaction.schemas';
 
@@ -11,7 +12,7 @@ const router = Router();
 
 // Crear transacción
 router.post('/', validate(createTransactionSchema), async (req, res) => {
-  const { type, amount, description, accountId, date } = req.body;
+  const { type, amount, description, accountId, date, categoryId } = req.body;
   const userId = (req as any).userId;
     console.log({userId})
   try {
@@ -29,6 +30,7 @@ router.post('/', validate(createTransactionSchema), async (req, res) => {
         accountId,
         userId,
         date: date ? new Date(date) : undefined,
+        categoryId,
       },
     });
     res.json(transaction);
@@ -41,7 +43,7 @@ router.post('/', validate(createTransactionSchema), async (req, res) => {
 // Actualizar transacción
 router.put('/:id', validate(updateTransactionSchema), async (req, res) => {
   const { id } = req.params;
-  const { type, amount, description, date } = req.body;
+  const { type, amount, description, date, categoryId } = req.body;
   const userId = (req as any).userId;
 
   try {
@@ -58,6 +60,7 @@ router.put('/:id', validate(updateTransactionSchema), async (req, res) => {
         amount,
         description,
         date: date ? new Date(date) : undefined,
+        categoryId,
       },
     });
     res.json(updated);
@@ -69,15 +72,46 @@ router.put('/:id', validate(updateTransactionSchema), async (req, res) => {
 
 // Listar transacciones de un usuario
 router.get('/', async (req, res) => {
-  const userId = (req as any).userId;
   try {
+    const userId = (req as any).userId;
+
     const transactions = await prisma.transaction.findMany({
       where: { userId },
+      include: {
+        account: true,
+        category: true,
+      },
       orderBy: { date: 'desc' },
     });
+
     res.json(transactions);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Error al obtener transacciones' });
+  }
+});
+
+router.get('/:id', validate(getTransactionSchema), async (req, res) => {
+  try {
+    const userId = (req as any).userId;
+    const { id } = req.params;
+
+    const transaction = await prisma.transaction.findFirst({
+      where: { id, userId },
+      include: {
+        account: true,
+        category: true,
+      },
+    });
+
+    if (!transaction) {
+      return res.status(404).json({ error: 'Transacción no encontrada' });
+    }
+
+    res.json(transaction);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener transacción' });
   }
 });
 
