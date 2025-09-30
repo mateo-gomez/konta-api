@@ -65,3 +65,31 @@ Content-Type: application/json
 ###
 GET http://localhost:3000/transactions/{{transactionId}}
 Authorization: Bearer {{token}}
+
+### 7️⃣ FILTRAR TRANSACCIONES POR CATEGORÍA
+GET http://localhost:3000/transactions?categoryId=cmg605pzf0001qniyq21uzfyf
+Authorization: Bearer {{token}}
+
+### 8️⃣ FILTRAR TRANSACCIONES POR CUENTA
+GET http://localhost:3000/transactions?accountId=cmfiwew820001qk5sktgs8tkt
+Authorization: Bearer {{token}}
+
+### 9️⃣ FILTRAR TRANSACCIONES POR CATEGORÍA Y CUENTA
+GET http://localhost:3000/transactions?categoryId=cmg5c2tku0001qnizf6ws3u4s&accountId=cmfiwew820001qk5sktgs8tkt
+Authorization: Bearer {{token}}
+
+### 10️⃣ FILTRAR TRANSACCIONES POR CATEGORÍA Y AÑO
+GET http://localhost:3000/transactions?categoryId=cmg5c2tku0001qnizf6ws3u4s&year=2025
+Authorization: Bearer {{token}}
+
+### 11️⃣ FILTRAR TRANSACCIONES POR CATEGORÍA, AÑO Y MES
+GET http://localhost:3000/transactions?categoryId=cmg5c2tku0001qnizf6ws3u4s&year=2025&month=8
+Authorization: Bearer {{token}}
+
+### 12️⃣ FILTRAR TRANSACCIONES POR AÑO
+GET http://localhost:3000/transactions?year=2025
+Authorization: Bearer {{token}}
+
+### 13️⃣ FILTRAR TRANSACCIONES POR AÑO Y MES
+GET http://localhost:3000/transactions?year=2025&month=9
+Authorization: Bearer {{token}}

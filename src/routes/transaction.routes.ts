@@ -74,9 +74,49 @@ router.put('/:id', validate(updateTransactionSchema), async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const userId = (req as any).userId;
+    const { month, year, categoryId, accountId } = req.query;
+
+    // Construir filtros dinámicamente
+    const where: any = { userId };
+
+    // Filtro por cuenta
+    if (accountId) {
+      where.accountId = accountId as string;
+    }
+
+    // Filtro por categoría
+    if (categoryId) {
+      where.categoryId = categoryId as string;
+    }
+
+    // Filtro por mes y año
+    if (month || year) {
+      const yearNum = year ? parseInt(year as string) : new Date().getFullYear();
+      const monthNum = month ? parseInt(month as string) : undefined;
+
+      if (monthNum !== undefined) {
+        // Filtrar por mes específico
+        const startDate = new Date(yearNum, monthNum - 1, 1);
+        const endDate = new Date(yearNum, monthNum, 0, 23, 59, 59, 999);
+
+        where.date = {
+          gte: startDate,
+          lte: endDate,
+        };
+      } else {
+        // Filtrar solo por año
+        const startDate = new Date(yearNum, 0, 1);
+        const endDate = new Date(yearNum, 11, 31, 23, 59, 59, 999);
+
+        where.date = {
+          gte: startDate,
+          lte: endDate,
+        };
+      }
+    }
 
     const transactions = await prisma.transaction.findMany({
-      where: { userId },
+      where,
       include: {
         account: true,
         category: true,
