@@ -25,3 +25,8 @@ Content-Type: application/json
 @token = {{loginRequest.response.body.token}}
 GET http://localhost:3000/profile
 Authorization: Bearer {{token}}
+
+###
+# @name meRequest
+GET http://localhost:3000/auth/me
+Authorization: Bearer {{token}}
