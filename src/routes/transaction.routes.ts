@@ -70,11 +70,19 @@ router.put('/:id', validate(updateTransactionSchema), async (req, res) => {
   }
 });
 
-// Listar transacciones de un usuario
+// Listar transacciones de un usuario con paginación
 router.get('/', async (req, res) => {
   try {
     const userId = (req as any).userId;
-    const { month, year, categoryId, accountId } = req.query;
+    const { month, year, categoryId, accountId, limit, cursor } = req.query;
+
+    // Configurar límite de resultados (default: 20)
+    const pageLimit = limit ? parseInt(limit as string) : 20;
+
+    // Validar que el límite sea razonable
+    if (pageLimit > 100) {
+      return res.status(400).json({ error: 'El límite máximo es 100 transacciones por página' });
+    }
 
     // Construir filtros dinámicamente
     const where: any = { userId };
@@ -115,16 +123,44 @@ router.get('/', async (req, res) => {
       }
     }
 
-    const transactions = await prisma.transaction.findMany({
+    // Construir query con paginación cursor-based
+    const queryOptions: any = {
       where,
       include: {
         account: true,
         category: true,
       },
       orderBy: { date: 'desc' },
-    });
+      take: pageLimit + 1, // Traer uno extra para saber si hay más
+    };
 
-    res.json(transactions);
+    // Si hay cursor, agregar skip y cursor
+    if (cursor) {
+      queryOptions.skip = 1; // Saltar el cursor
+      queryOptions.cursor = {
+        id: cursor as string,
+      };
+    }
+
+    const transactions = await prisma.transaction.findMany(queryOptions);
+
+    // Verificar si hay más resultados
+    const hasMore = transactions.length > pageLimit;
+
+    // Remover el elemento extra si existe
+    const data = hasMore ? transactions.slice(0, pageLimit) : transactions;
+
+    // Obtener el cursor para la siguiente página
+    const nextCursor = hasMore ? data[data.length - 1].id : null;
+
+    res.json({
+      data,
+      pagination: {
+        nextCursor,
+        hasMore,
+        limit: pageLimit,
+      },
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al obtener transacciones' });

@@ -71,7 +71,7 @@ GET http://localhost:3000/transactions?categoryId=cmg605pzf0001qniyq21uzfyf
 Authorization: Bearer {{token}}
 
 ### 8️⃣ FILTRAR TRANSACCIONES POR CUENTA
-GET http://localhost:3000/transactions?accountId=cmfiwew820001qk5sktgs8tkt
+GET http://localhost:3000/transactions?accountId=cmfiwz2280001qn3u2scpe1la
 Authorization: Bearer {{token}}
 
 ### 9️⃣ FILTRAR TRANSACCIONES POR CATEGORÍA Y CUENTA
@@ -92,4 +92,12 @@ Authorization: Bearer {{token}}
 
 ### 13️⃣ FILTRAR TRANSACCIONES POR AÑO Y MES
 GET http://localhost:3000/transactions?year=2025&month=9
+Authorization: Bearer {{token}}
+
+### 14️⃣ FILTRAR TRANSACCIONES CON PAGINACIÓN
+GET http://localhost:3000/transactions?limit=10&cursor=cmfiz9dvo0001qnr907fbfn6k
+Authorization: Bearer {{token}}
+
+### 15️⃣ FILTRAR TRANSACCIONES CON PAGINACIÓN Y CATEGORÍA
+GET http://localhost:3000/transactions?limit=10&cursor=cmfiz9dvo0001qnr907fbfn6k&categoryId=cmg5c2tku0001qnizf6ws3u4s
 Authorization: Bearer {{token}}
